@@ -6,6 +6,10 @@ macro(__add_benchmark LIB LIB_CMAKE NAME TYPE)
   target_link_libraries(${LIB}_${NAME}_${TYPE} PRIVATE ${LIB_CMAKE})
   target_link_libraries(${LIB}_${NAME}_${TYPE} PRIVATE common)
 
+  if (${LIB} STREQUAL "oxidd")
+    set_property(TARGET ${LIB}_${NAME}_${TYPE} PROPERTY CXX_STANDARD 20)
+  endif()
+
   if (BDD_BENCHMARK_GRENDEL)
     target_compile_definitions(${LIB}_${NAME}_${TYPE} PRIVATE BDD_BENCHMARK_GRENDEL)
   endif()

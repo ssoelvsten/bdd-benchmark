@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -69,11 +70,11 @@ public:
     _relprev_vars = bot();
   }
 
-  template <typename F>
   int
-  run(const F& f)
+  run(std::function<int()> f)
   {
-    return f();
+    int res = _manager.run_in_worker_pool(std::move(f));
+    return res;
   }
 
   // BDD Operations
@@ -115,7 +116,8 @@ public:
   cube(const std::function<bool(int)>& pred)
   {
     oxidd::bdd_function cube = top();
-    for (size_t i = 0; i < _manager.num_vars(); ++i) {
+    const oxidd::var_no_t num_vars = _manager.num_vars();
+    for (oxidd::var_no_t i = 0; i < num_vars; ++i) {
       if (pred(i)) cube &= _manager.var(i);
     }
     return cube;
@@ -216,12 +218,14 @@ public:
     if (_relnext_vars == bot()) {
       _relnext_vars = cube([](int x) { return x % 2 == 0; });
 
-      std::vector<std::pair<uint32_t, oxidd::bdd_function>> pairs;
-      pairs.reserve((_manager.num_vars() / 2) + 1);
-      for (int i = _manager.num_vars() - 2; 0 <= i; i -= 2) {
-        pairs.push_back({ i + 1, _manager.var(i) });
-      }
-      _relnext_pairs = oxidd::bdd_substitution(pairs.begin(), pairs.end());
+      const oxidd::var_no_t num_vars = _manager.num_vars();
+      assert(num_vars % 2 == 0);
+      _relnext_pairs = oxidd::bdd_substitution(
+        std::views::iota(oxidd::var_no_t(0), num_vars / 2)
+        | std::views::transform(
+          [this](oxidd::var_no_t v) -> std::pair<oxidd::var_no_t, oxidd::bdd_function> {
+            return { 2 * v + 1, _manager.var(2 * v) };
+          }));
     }
 
     return states.apply_exists(oxidd::util::boolean_operator::AND, rel, _relnext_vars)
@@ -236,12 +240,14 @@ public:
     if (_relprev_vars == bot()) {
       _relprev_vars = cube([](int x) { return x % 2 == 1; });
 
-      std::vector<std::pair<uint32_t, oxidd::bdd_function>> pairs;
-      pairs.reserve((_manager.num_vars() / 2) + 1);
-      for (int i = _manager.num_vars() - 2; 0 <= i; i -= 2) {
-        pairs.push_back({ i, _manager.var(i + 1) });
-      }
-      _relprev_pairs = oxidd::bdd_substitution(pairs.begin(), pairs.end());
+      const oxidd::var_no_t num_vars = _manager.num_vars();
+      assert(num_vars % 2 == 0);
+      _relprev_pairs = oxidd::bdd_substitution(
+        std::views::iota(oxidd::var_no_t(0), num_vars / 2)
+        | std::views::transform(
+          [this](oxidd::var_no_t v) -> std::pair<oxidd::var_no_t, oxidd::bdd_function> {
+            return { 2 * v, _manager.var(2 * v + 1) };
+          }));
     }
 
     return states.substitute(_relprev_pairs)
@@ -384,11 +390,10 @@ public:
     _relprev_vars = bot();
   }
 
-  template <typename F>
   int
-  run(const F& f)
+  run(std::function<int()> f)
   {
-    return f();
+    return _manager.run_in_worker_pool(std::move(f));
   }
 
   // BDD Operations
@@ -430,7 +435,8 @@ public:
   cube(const std::function<bool(int)>& pred)
   {
     oxidd::bcdd_function cube = top();
-    for (size_t i = 0; i < _manager.num_vars(); ++i) {
+    const oxidd::var_no_t num_vars = _manager.num_vars();
+    for (oxidd::var_no_t i = 0; i < num_vars; ++i) {
       if (pred(i)) cube &= _manager.var(i);
     }
     return cube;
@@ -531,12 +537,14 @@ public:
     if (_relnext_vars == bot()) {
       _relnext_vars = cube([](int x) { return x % 2 == 0; });
 
-      std::vector<std::pair<uint32_t, oxidd::bcdd_function>> pairs;
-      pairs.reserve((_manager.num_vars() / 2) + 1);
-      for (int i = _manager.num_vars() - 2; 0 <= i; i -= 2) {
-        pairs.push_back({ i + 1, _manager.var(i) });
-      }
-      _relnext_pairs = oxidd::bcdd_substitution(pairs.begin(), pairs.end());
+      const oxidd::var_no_t num_vars = _manager.num_vars();
+      assert(num_vars % 2 == 0);
+      _relnext_pairs = oxidd::bcdd_substitution(
+        std::views::iota(oxidd::var_no_t(0), num_vars / 2)
+        | std::views::transform(
+          [this](oxidd::var_no_t v) -> std::pair<oxidd::var_no_t, oxidd::bcdd_function> {
+            return { 2 * v + 1, _manager.var(2 * v) };
+          }));
     }
 
     return states.apply_exists(oxidd::util::boolean_operator::AND, rel, _relnext_vars)
@@ -551,12 +559,14 @@ public:
     if (_relprev_vars == bot()) {
       _relprev_vars = cube([](int x) { return x % 2 == 1; });
 
-      std::vector<std::pair<uint32_t, oxidd::bcdd_function>> pairs;
-      pairs.reserve((_manager.num_vars() / 2) + 1);
-      for (int i = _manager.num_vars() - 2; 0 <= i; i -= 2) {
-        pairs.push_back({ i, _manager.var(i + 1) });
-      }
-      _relprev_pairs = oxidd::bcdd_substitution(pairs.begin(), pairs.end());
+      const oxidd::var_no_t num_vars = _manager.num_vars();
+      assert(num_vars % 2 == 0);
+      _relprev_pairs = oxidd::bcdd_substitution(
+        std::views::iota(oxidd::var_no_t(0), num_vars / 2)
+        | std::views::transform(
+          [this](oxidd::var_no_t v) -> std::pair<oxidd::var_no_t, oxidd::bcdd_function> {
+            return { 2 * v, _manager.var(2 * v + 1) };
+          }));
     }
 
     return states.substitute(_relprev_pairs)
@@ -693,11 +703,10 @@ public:
     _manager.add_vars(varcount);
   }
 
-  template <typename F>
   int
-  run(const F& f)
+  run(std::function<int()> f)
   {
-    return f();
+    return _manager.run_in_worker_pool(std::move(f));
   }
 
   // ZDD Operations
@@ -836,6 +845,7 @@ public:
   inline uint64_t
   satcount(const oxidd::zbdd_function& f, const size_t vc)
   {
+    assert(vc <= _manager.num_vars());
     return f.sat_count_double(vc);
   }
 
@@ -884,7 +894,7 @@ public:
   build_node(const int label, const oxidd::zbdd_function& low, const oxidd::zbdd_function& high)
   {
     return _latest_build =
-      _manager.singleton(label).make_node(oxidd::zbdd_function(high), oxidd::zbdd_function(low));
+             _manager.singleton(label).make_node(oxidd::zbdd_function(high), oxidd::zbdd_function(low));
   }
 
   inline oxidd::zbdd_function
