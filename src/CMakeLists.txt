@@ -25,20 +25,17 @@ macro(add_bdd_benchmark NAME)
   __add_benchmark(buddy  buddy   ${NAME} bdd)
   __add_benchmark(cudd   cudd    ${NAME} bdd)
   __add_benchmark(libbdd lib-bdd ${NAME} bdd)
-  __add_benchmark(oxidd  oxidd   ${NAME} bdd)
 endmacro(add_bdd_benchmark)
 
 macro(add_bcdd_benchmark NAME)
   __add_benchmark(cal    cal            ${NAME} bcdd)
   __add_benchmark(cudd   cudd           ${NAME} bcdd)
-  __add_benchmark(oxidd  oxidd          ${NAME} bcdd)
   __add_benchmark(sylvan sylvan::sylvan ${NAME} bcdd)
 endmacro(add_bcdd_benchmark)
 
 macro(add_zdd_benchmark NAME)
   __add_benchmark(adiar adiar ${NAME} zdd)
   __add_benchmark(cudd  cudd  ${NAME} zdd)
-  __add_benchmark(oxidd oxidd ${NAME} zdd)
 endmacro(add_zdd_benchmark)
 
 macro(add_benchmark NAME)
@@ -52,20 +49,17 @@ macro(link_bdd_extra NAME EXTRA_LIB)
   target_link_libraries(buddy_${NAME}_bdd   PRIVATE ${EXTRA_LIB})
   target_link_libraries(cudd_${NAME}_bdd    PRIVATE ${EXTRA_LIB})
   target_link_libraries(libbdd_${NAME}_bdd  PRIVATE ${EXTRA_LIB})
-  target_link_libraries(oxidd_${NAME}_bdd   PRIVATE ${EXTRA_LIB})
 endmacro(link_bdd_extra)
 
 macro(link_bcdd_extra NAME EXTRA_LIB)
   target_link_libraries(cal_${NAME}_bcdd    PRIVATE ${EXTRA_LIB})
   target_link_libraries(cudd_${NAME}_bcdd   PRIVATE ${EXTRA_LIB})
-  target_link_libraries(oxidd_${NAME}_bcdd  PRIVATE ${EXTRA_LIB})
   target_link_libraries(sylvan_${NAME}_bcdd PRIVATE ${EXTRA_LIB})
 endmacro(link_bcdd_extra)
 
 macro(link_zdd_extra NAME EXTRA_LIB)
   target_link_libraries(adiar_${NAME}_zdd   PRIVATE ${EXTRA_LIB})
   target_link_libraries(cudd_${NAME}_zdd    PRIVATE ${EXTRA_LIB})
-  target_link_libraries(oxidd_${NAME}_zdd   PRIVATE ${EXTRA_LIB})
 endmacro(link_zdd_extra)
 
 macro(link_extra NAME EXTRA_LIB)
@@ -96,6 +90,11 @@ link_extra(picotrav libblifparse)
 
 add_bdd_benchmark(qbf)
 add_bcdd_benchmark(qbf)
+
+# ---------------------------------------------------------------------------- #
+# Security
+add_bdd_benchmark(flam)
+link_bdd_extra(flam pugixml)
 
 # ---------------------------------------------------------------------------- #
 # Single Operation Benchmarks

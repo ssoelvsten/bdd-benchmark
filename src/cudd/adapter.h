@@ -273,6 +273,18 @@ public:
     return (states.Permute(_permute_relprev.data()) & rel).ExistAbstract(_vars_relprev);
   }
 
+  inline bool
+  is_eq(const ADD& f, const ADD& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const ADD& f, const ADD& g)
+  {
+    return f <= g;
+  }
+
   inline uint64_t
   nodecount(const ADD& f)
   {
@@ -553,6 +565,18 @@ public:
     return states.Permute(_permute_relprev.data()).AndAbstract(rel, _vars_relprev);
   }
 
+  inline bool
+  is_eq(const BDD& f, const BDD& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const BDD& f, const BDD& g)
+  {
+    return f <= g;
+  }
+
   inline uint64_t
   nodecount(const BDD& f)
   {
@@ -805,6 +829,18 @@ public:
   {
     for (; begin != end; ++begin) { f = this->forall(*begin); }
     return f;
+  }
+
+  inline bool
+  is_eq(const ZDD& f, const ZDD& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const ZDD& f, const ZDD& g)
+  {
+    return f <= g;
   }
 
   inline uint64_t

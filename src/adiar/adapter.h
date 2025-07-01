@@ -236,6 +236,18 @@ public:
       adiar::replace_type::Shift);
   }
 
+  inline bool
+  is_eq(const adiar::bdd& f, const adiar::bdd& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const adiar::bdd& f, const adiar::bdd& g)
+  {
+    return apply_imp(f, g) == top();
+  }
+
   inline uint64_t
   nodecount(const adiar::bdd& f)
   {
@@ -471,6 +483,18 @@ public:
   forall(const adiar::zdd& f, IT rbegin, IT rend)
   {
     return ~(exists(~f, rbegin, rend));
+  }
+
+  inline bool
+  is_eq(const adiar::zdd& f, const adiar::zdd& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const adiar::zdd& f, const adiar::zdd& g)
+  {
+    return f <= g;
   }
 
   inline uint64_t

@@ -265,6 +265,20 @@ public:
     return states.RelPrev(rel, rel_support);
   }
 
+
+  inline bool
+  is_eq(const sylvan::Bdd& f, const sylvan::Bdd& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const sylvan::Bdd& f, const sylvan::Bdd& g)
+  {
+    return f <= g;
+  }
+
+
   inline uint64_t
   nodecount(const sylvan::Bdd& f)
   {

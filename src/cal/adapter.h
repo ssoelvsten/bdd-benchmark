@@ -247,6 +247,18 @@ public:
     return _mgr.RelProd(std::move(shifted_states), rel);
   }
 
+  inline bool
+  is_eq(const BDD& f, const BDD& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const BDD& f, const BDD& g)
+  {
+    return f.Implies(g) == top();
+  }
+
   inline uint64_t
   nodecount(BDD f)
   {

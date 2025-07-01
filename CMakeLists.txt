@@ -77,9 +77,6 @@ add_subdirectory(external/cudd cudd EXCLUDE_FROM_ALL)
 # Biodivine/LibBDD (Samuel Pastva et al. - Institute of Science and Technology Austria)
 add_subdirectory(external/lib-bdd-ffi lib-bdd-ffi EXCLUDE_FROM_ALL)
 
-# OxiDD (Nils Husung et al. - Saarland University, Germany and Eindhoven University of Technology, The Netherlands)
-add_subdirectory(external/oxidd oxidd EXCLUDE_FROM_ALL)
-
 # Sylvan Package (Tom van Dijk - University of Twente, Netherlands)
 if (BDD_BENCHMARK_STATS)
   set(SYLVAN_STATS ON)

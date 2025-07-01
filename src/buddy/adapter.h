@@ -332,6 +332,18 @@ public:
     return bdd_appex(bdd_replace(states, _pairs_relprev), rel, bddop_and, _vars_relprev);
   }
 
+  inline bool
+  is_eq(const bdd& f, const bdd& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const bdd& f, const bdd& g)
+  {
+    return (f >> g) == top();
+  }
+
   inline uint64_t
   nodecount(const bdd& f)
   {

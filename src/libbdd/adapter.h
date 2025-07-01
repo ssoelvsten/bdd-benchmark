@@ -669,6 +669,18 @@ public:
       .and_exists(rel, _relprev_vars.data(), _relprev_vars.size());
   }
 
+  inline bool
+  is_eq(const lib_bdd::bdd_function& f, const lib_bdd::bdd_function& g)
+  {
+    return f == g;
+  }
+
+  inline bool
+  is_imp(const lib_bdd::bdd_function& f, const lib_bdd::bdd_function& g)
+  {
+    return apply_imp(f, g) == top();
+  }
+
   inline uint64_t
   nodecount(const lib_bdd::bdd_function& f)
   {
