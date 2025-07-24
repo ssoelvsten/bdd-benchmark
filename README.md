@@ -839,6 +839,11 @@ used this benchmarking suite for their evaluation:
 
   [arXiv](https://arxiv.org/abs/2408.14216)
 
+- Steffan Christ Sølvsten and Jaco van de Pol.
+  “*Symbolic Model Checking in External Memory*”.
+
+  [arXiv](https://arxiv.org/abs/2505.11229)
+
 ## References
 
 - [[Arge1995](https://link.springer.com/chapter/10.1007/BFb0015411)]
