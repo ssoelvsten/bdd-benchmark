@@ -670,8 +670,6 @@ struct df_fujita_policy
 std::vector<unsigned>
 fanin_variable_order(const net_t& net_0)
 {
-  const std::vector<node_t>& nodes = net_0.nodes;
-
   // Create a `std::vector` we can sort
   std::vector<node_id_t> inputs;
   inputs.reserve(net_0.inputs_w_order.size());
