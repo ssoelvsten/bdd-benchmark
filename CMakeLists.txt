@@ -82,7 +82,7 @@ if (CAL)
 endif (CAL)
 
 # CUDD Package (Fabio Somenzi - University of Colorado Boulder, United States of America)
-option(CUDD "Build for CAL" ON)
+option(CUDD "Build for CUDD" ON)
 if (CUDD)
   add_subdirectory(external/cudd cudd EXCLUDE_FROM_ALL)
 endif (CUDD)
