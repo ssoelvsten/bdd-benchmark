@@ -408,7 +408,7 @@ All symmetries use a variable order where the pre/post variables are zipped and
 and follow a row-major ordering.
 
 ```bash
-./build/src/${LIB}_game-of-life_${KIND} -n 5 -n 4 -o rotate-180
+./build/src/${LIB}_game-of-life_${KIND} -n 5 -n 4 -s rotate-180
 ```
 
 
