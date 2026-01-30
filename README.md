@@ -837,6 +837,7 @@ used this benchmarking suite for their evaluation:
   “*Multi-variable Quantification of BDDs in External Memory using Nested
   Sweeping*”.
 
+  [VMCAI 2026](https://link.springer.com/chapter/10.1007/978-3-032-15700-3_17),
   [arXiv](https://arxiv.org/abs/2408.14216)
 
 - Steffan Christ Sølvsten and Jaco van de Pol.
