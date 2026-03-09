@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 
-#include "../common/adapter.h"
+#include "../basic_adapter.h"
 
 #include <bdd.h>
 
@@ -92,23 +92,20 @@ cache_size(const size_t memory_bytes, const int nodes)
   return std::max(min_cache, std::min(max_cache, max_cache));
 }
 
-class buddy_bdd_adapter
+struct buddy_constants
 {
-public:
   static constexpr std::string_view name = "BuDDy";
   static constexpr std::string_view dd   = "BDD";
 
-  static constexpr bool needs_extend     = false;
+  static constexpr bool needs_extend = false;
   static constexpr bool needs_frame_rule = true;
+};
 
-  static constexpr bool complement_edges = false;
-
+class buddy_bdd_adapter : public basic_adapter<buddy_constants, bdd>
+{
 public:
-  typedef bdd dd_t;
-  typedef bdd build_node_t;
 
 private:
-  const int _varcount;
   bdd _latest_build;
 
   bdd _vars_relnext;
@@ -120,7 +117,7 @@ private:
   // Init and Deinit
 public:
   buddy_bdd_adapter(int varcount)
-    : _varcount(varcount)
+    : basic_adapter(varcount)
   {
     const size_t memory_bytes = static_cast<size_t>(M) * 1024 * 1024;
 
@@ -196,35 +193,16 @@ public:
     return bdd_nithvar(i);
   }
 
-  template <typename IT>
   inline bdd
-  cube(IT rbegin, IT rend)
+  neg(const bdd& f)
   {
-    bdd res = top();
-    while (rbegin != rend) { res = ite(ithvar(*(rbegin++)), res, bot()); }
-    return res;
-  }
-
-  inline bdd
-  cube(const std::function<bool(int)>& pred)
-  {
-    bdd res = top();
-    for (int i = _varcount - 1; 0 <= i; --i) {
-      if (pred(i)) { res = ite(ithvar(i), res, bot()); }
-    }
-    return res;
+    return ~f;
   }
 
   inline bdd
   apply_and(const bdd& f, const bdd& g)
   {
     return bdd_and(f, g);
-  }
-
-  inline bdd
-  apply_diff(const bdd& f, const bdd& g)
-  {
-    return bdd_and(f, ~g);
   }
 
   inline bdd
@@ -240,28 +218,21 @@ public:
   }
 
   inline bdd
-  apply_xnor(const bdd& f, const bdd& g)
-  {
-    return bdd_biimp(f, g);
-  }
-
-  inline bdd
   apply_xor(const bdd& f, const bdd& g)
   {
     return bdd_xor(f, g);
   }
 
   inline bdd
+  apply_xnor(const bdd& f, const bdd& g)
+  {
+    return bdd_biimp(f, g);
+  }
+
+  inline bdd
   ite(const bdd& f, const bdd& g, const bdd& h)
   {
     return bdd_ite(f, g, h);
-  }
-
-  template <typename IT>
-  inline bdd
-  extend(const bdd& f, IT /*begin*/, IT /*end*/)
-  {
-    return f;
   }
 
   inline bdd
@@ -339,12 +310,6 @@ public:
     // BuDDy does not count terminal nodes. If a BDD has no inner nodes, then it consists of a
     // single terminal node. Otherwise, both terminals are referenced.
     return c == 0 ? 1 : c + 2;
-  }
-
-  inline uint64_t
-  satcount(const bdd& f)
-  {
-    return this->satcount(f, this->_varcount);
   }
 
   inline uint64_t

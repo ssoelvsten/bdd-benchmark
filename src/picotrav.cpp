@@ -17,7 +17,7 @@
 // sorting, shuffling
 #include <algorithm>
 
-#include "common/adapter.h"
+#include "basic_adapter.h"
 #include "common/chrono.h"
 #include "common/input.h"
 

@@ -8,7 +8,7 @@
 // Other
 #include <stdexcept>
 
-#include "common/adapter.h"
+#include "basic_adapter.h"
 #include "common/chrono.h"
 #include "common/input.h"
 #include "common/libbdd_parser.h"

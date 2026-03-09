@@ -34,7 +34,7 @@
 #include <pugixml.hpp>
 
 // Common
-#include "common/adapter.h"
+#include "basic_adapter.h"
 #include "common/chrono.h"
 #include "common/input.h"
 

@@ -8,7 +8,7 @@
 // Types
 #include <cstdlib>
 
-#include "common/adapter.h"
+#include "basic_adapter.h"
 #include "common/array.h"
 #include "common/chrono.h"
 #include "common/input.h"

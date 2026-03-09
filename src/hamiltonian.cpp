@@ -18,7 +18,7 @@
 // Other
 #include <utility>
 
-#include "common/adapter.h"
+#include "basic_adapter.h"
 #include "common/array.h"
 #include "common/chrono.h"
 #include "common/input.h"
@@ -1626,11 +1626,6 @@ namespace enc_gadgets
     largest_bdd            = std::max(largest_bdd, nodecount);
     total_nodes += nodecount;
 #endif // BDD_BENCHMARK_STATS
-
-    // std::stringstream ss;
-    // ss << "gadget_" << e.u().to_string() << "_" << e.v().to_string() << "_" << p << ".dot";
-
-    // adapter.print_dot(out, ss.str());
 
     return out;
   }
